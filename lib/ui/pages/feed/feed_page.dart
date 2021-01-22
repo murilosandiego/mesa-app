@@ -17,6 +17,15 @@ class FeedPage extends StatelessWidget {
             fontSize: 17,
           ),
         ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 12),
+            child: Image.asset(
+              'lib/ui/assets/icons/filter.png',
+              alignment: Alignment.centerRight,
+            ),
+          )
+        ],
       ),
       body: ListView(
         children: [
