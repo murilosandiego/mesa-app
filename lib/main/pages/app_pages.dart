@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:mesa_news/ui/pages/filter/filter_page.dart';
 
 import '../../ui/pages/feed/feed_page.dart';
 import '../../ui/pages/login/login_page.dart';
@@ -14,6 +15,7 @@ abstract class AppPages {
   static const login = '/login';
   static const feed = '/feed';
   static const news = '/news';
+  static const filter = '/filter';
 
   static final pages = [
     GetPage(
@@ -37,6 +39,10 @@ abstract class AppPages {
     GetPage(
       name: news,
       page: () => NewsPage(),
+    ),
+    GetPage(
+      name: filter,
+      page: () => FilterPage(),
     ),
   ];
 }

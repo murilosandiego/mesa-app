@@ -18,9 +18,9 @@ class FeedPage extends StatelessWidget {
           ),
         ),
         actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 12),
-            child: Image.asset(
+          IconButton(
+            onPressed: () => Get.toNamed(AppPages.filter),
+            icon: Image.asset(
               'lib/ui/assets/icons/filter.png',
               alignment: Alignment.centerRight,
             ),

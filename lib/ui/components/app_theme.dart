@@ -4,7 +4,7 @@ ThemeData makeAppTheme() {
   final primaryColor = Color(0xFF010A53);
   final primaryColorDark = Color.fromRGBO(96, 0, 39, 1);
   final primaryColorLight = Color.fromRGBO(188, 71, 123, 1);
-  final secondaryColor = Color.fromRGBO(0, 77, 64, 1);
+  final secondaryColor = Color(0xFF00B2FF);
   final secondaryColorDark = Color.fromRGBO(0, 37, 26, 1);
   final disabledColor = Colors.grey[400];
   final dividerColor = Colors.grey;
@@ -32,6 +32,11 @@ ThemeData makeAppTheme() {
     bodyText2: TextStyle(
       fontSize: 14,
       fontWeight: FontWeight.w400,
+      color: Colors.black,
+    ),
+    subtitle1: TextStyle(
+      fontSize: 17,
+      fontWeight: FontWeight.w500,
       color: Colors.black,
     ),
   );
