@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
+import '../../ui/pages/feed/feed_page.dart';
 import '../../ui/pages/login/login_page.dart';
 import '../../ui/pages/splash/splash_page.dart';
 import '../../ui/pages/welcome/welcome_page.dart';
@@ -30,9 +30,7 @@ abstract class AppPages {
     ),
     GetPage(
       name: feed,
-      page: () => Container(
-        child: Text('aqui'),
-      ),
+      page: () => FeedPage(),
     ),
   ];
 }
