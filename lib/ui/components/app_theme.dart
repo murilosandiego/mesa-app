@@ -9,6 +9,11 @@ ThemeData makeAppTheme() {
   final disabledColor = Colors.grey[400];
   final dividerColor = Colors.grey;
   final textTheme = TextTheme(
+    headline1: TextStyle(
+      fontSize: 20,
+      fontWeight: FontWeight.w700,
+      color: Colors.black,
+    ),
     headline2: TextStyle(
       fontSize: 18,
       fontWeight: FontWeight.w700,
@@ -21,6 +26,11 @@ ThemeData makeAppTheme() {
     ),
     bodyText1: TextStyle(
       fontSize: 13,
+      fontWeight: FontWeight.w400,
+      color: Colors.black,
+    ),
+    bodyText2: TextStyle(
+      fontSize: 14,
       fontWeight: FontWeight.w400,
       color: Colors.black,
     ),

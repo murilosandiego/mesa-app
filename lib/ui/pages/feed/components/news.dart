@@ -20,7 +20,8 @@ class News extends StatelessWidget {
               child: CachedNetworkImage(
                 imageUrl:
                     'https://image.cnbcfm.com/api/v1/image/106422372-1583253995153rtx7ashh.jpg?v=1583254080',
-                placeholder: (context, url) => CircularProgressIndicator(),
+                placeholder: (context, url) =>
+                    Center(child: CircularProgressIndicator()),
                 errorWidget: (context, url, error) => Icon(Icons.error),
                 fit: BoxFit.cover,
               ),

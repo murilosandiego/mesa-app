@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:mesa_news/main/pages/app_pages.dart';
 
 import 'components/highlights.dart';
 import 'components/news.dart';
@@ -41,7 +43,10 @@ class FeedPage extends StatelessWidget {
               style: Theme.of(context).textTheme.headline2,
             ),
           ),
-          News(),
+          GestureDetector(
+            onTap: () => Get.toNamed(AppPages.news),
+            child: News(),
+          ),
         ],
       ),
     );
