@@ -1,15 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:mesa_news/ui/pages/feed/news_viewmodel.dart';
 
 class News extends StatelessWidget {
-  const News({
-    Key key,
-  }) : super(key: key);
+  final NewsViewModel newsViewModel;
+
+  const News({@required this.newsViewModel});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.symmetric(vertical: 8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -18,8 +19,7 @@ class News extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(3),
               child: CachedNetworkImage(
-                imageUrl:
-                    'https://image.cnbcfm.com/api/v1/image/106422372-1583253995153rtx7ashh.jpg?v=1583254080',
+                imageUrl: newsViewModel.imageUrl,
                 placeholder: (context, url) =>
                     Center(child: CircularProgressIndicator()),
                 errorWidget: (context, url, error) => Icon(Icons.error),
@@ -39,7 +39,7 @@ class News extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(top: 7),
                   child: Text(
-                    '16 horas atrás',
+                    newsViewModel.publishedAt.toString(),
                     style: TextStyle(
                       fontStyle: FontStyle.italic,
                       fontSize: 13,
@@ -52,12 +52,12 @@ class News extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(top: 11, bottom: 8),
             child: Text(
-              'Amazon, Walmart and others battle price dd gouging on coronavirus-related products - CNBC',
+              newsViewModel.title,
               style: Theme.of(context).textTheme.headline3,
             ),
           ),
           Text(
-            'Amazon, eBay, Walmart and Etsy have all struggled to curb price gouging and products that make unverified claims about the coronavirus.',
+            newsViewModel.description,
             style: Theme.of(context).textTheme.bodyText1,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,

@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:mesa_news/main/bindinds/feed_bindind.dart';
 import 'package:mesa_news/ui/pages/filter/filter_page.dart';
 
 import '../../ui/pages/feed/feed_page.dart';
@@ -35,6 +36,7 @@ abstract class AppPages {
     GetPage(
       name: feed,
       page: () => FeedPage(),
+      binding: FeedBinding(),
     ),
     GetPage(
       name: news,

@@ -54,7 +54,7 @@ void main() {
 
       await sut.load();
 
-      expect(sut.mainError, UIError.unexpected);
+      expect(sut.mainError, UIError.unexpected.description);
       expect(sut.isLoading, false);
     });
   });
