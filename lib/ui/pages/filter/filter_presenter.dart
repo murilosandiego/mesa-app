@@ -26,6 +26,5 @@ class FilterPresenter extends GetxController {
   clearFilter() {
     _isFavorite.value = false;
     _filterDate.value = FilterDate.all;
-    _updated.value = false;
   }
 }
