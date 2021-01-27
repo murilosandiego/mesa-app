@@ -16,13 +16,23 @@ class RemoteLoadNews implements LoadNews {
   });
 
   @override
-  Future<List<NewsEntity>> load() async {
+  Future<List<NewsEntity>> load({
+    String currentPage,
+    String perPage,
+    String publishedAt,
+  }) async {
+    String _currentPage = currentPage ?? '';
+    String _perPage = perPage ?? '';
+    String _publishedAt = publishedAt ?? '';
+
+    String _url =
+        '$url?current_page=$_currentPage&per_page=$_perPage&published_at=$_publishedAt';
     try {
-      final httpResponse = await httpClient.request(url: url, method: 'get');
+      final httpResponse = await httpClient.request(url: _url, method: 'get');
       final news = (httpResponse['data'] as List)
           .map((json) => NewsModel.fromJson(json))
           .toList()
-            ..sort((a, b) => b.publishedAt.compareTo(a.publishedAt));
+            ..sort((a, b) => b.publishedAt.compareTo(b.publishedAt));
 
       return news;
     } catch (_) {

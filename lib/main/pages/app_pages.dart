@@ -1,12 +1,14 @@
 import 'package:get/get.dart';
-import 'package:mesa_news/main/bindinds/feed_bindind.dart';
-import 'package:mesa_news/ui/pages/filter/filter_page.dart';
 
 import '../../ui/pages/feed/feed_page.dart';
+import '../../ui/pages/filter/filter_page.dart';
+import '../../ui/pages/filter_date/filter_date_page.dart';
 import '../../ui/pages/login/login_page.dart';
 import '../../ui/pages/news/news_page.dart';
 import '../../ui/pages/splash/splash_page.dart';
 import '../../ui/pages/welcome/welcome_page.dart';
+import '../bindinds/feed_bindind.dart';
+import '../bindinds/filter_binding.dart';
 import '../bindinds/login_bindind.dart';
 import '../bindinds/splash_binding.dart';
 
@@ -17,6 +19,7 @@ abstract class AppPages {
   static const feed = '/feed';
   static const news = '/news';
   static const filter = '/filter';
+  static const filterDate = '/filter-date';
 
   static final pages = [
     GetPage(
@@ -42,9 +45,10 @@ abstract class AppPages {
       name: news,
       page: () => NewsPage(),
     ),
+    GetPage(name: filter, page: () => FilterPage(), binding: FilterBinding()),
     GetPage(
-      name: filter,
-      page: () => FilterPage(),
+      name: filterDate,
+      page: () => FilterDatePage(),
     ),
   ];
 }

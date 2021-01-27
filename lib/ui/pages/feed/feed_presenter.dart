@@ -5,6 +5,7 @@ import 'package:mesa_news/domain/usecases/load_news.dart';
 import 'package:mesa_news/domain/entities/news_entity.dart';
 import 'package:mesa_news/domain/usecases/save_favorite.dart';
 import 'package:mesa_news/ui/helpers/app_snackbar.dart';
+import 'package:mesa_news/ui/helpers/filter_params.dart';
 import 'package:mesa_news/ui/helpers/ui_error.dart';
 import 'package:mesa_news/ui/pages/feed/news_viewmodel.dart';
 import 'package:meta/meta.dart';
@@ -31,16 +32,26 @@ class FeedPresenter extends GetxController {
 
   String get mainError => _mainError.value;
 
-  load() async {
+  load({FilterParams filterParams}) async {
+    _isLoading.value = true;
     try {
-      _listAllNewsEntity = await loadNews.load();
+      _listAllNewsEntity = await loadNews.load(
+        publishedAt: filterParams?.filterDate?.date,
+      );
+
       _listFavorites = await loadFavorites.load();
 
-      news.assignAll(_listAllNewsEntity.map((news) {
-        final isFavorite = _listFavorites.contains(news);
+      if (filterParams?.isFavorite == true) {
+        news.assignAll(_listFavorites.map((news) {
+          return toViewModel(news: news, isFavorite: true);
+        }));
+      } else {
+        news.assignAll(_listAllNewsEntity.map((news) {
+          final isFavorite = _listFavorites.contains(news);
 
-        return toViewModel(news: news, isFavorite: isFavorite);
-      }));
+          return toViewModel(news: news, isFavorite: isFavorite);
+        }));
+      }
     } catch (_) {
       _mainError.value = UIError.unexpected.description;
     } finally {

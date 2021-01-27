@@ -23,7 +23,12 @@ class FeedPage extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            onPressed: () => Get.toNamed(AppPages.filter),
+            onPressed: () async {
+              final filterParams = await Get.toNamed(AppPages.filter);
+              if (filterParams != null) {
+                presenter.load(filterParams: filterParams);
+              }
+            },
             icon: Image.asset(
               'lib/ui/assets/icons/filter.png',
               alignment: Alignment.centerRight,
