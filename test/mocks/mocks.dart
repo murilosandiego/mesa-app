@@ -63,7 +63,7 @@ final news1 = NewsModel(
   highlight: false,
   imageUrl: faker.internet.httpsUrl(),
   publishedAt: faker.date.dateTime(),
-  title: faker.lorem.sentence(),
+  title: 'title',
   url: faker.internet.httpsUrl(),
 );
 

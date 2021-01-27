@@ -22,6 +22,7 @@ void main() {
   LoadFavorites loadFavorites;
   NewsEntity newsEntity;
   List mockFavorites;
+  List<NewsEntity> factoryRemoveList;
 
   mockSuccess() =>
       when(loadFavorites.load()).thenAnswer((_) async => factoryListFavorites);
@@ -48,6 +49,10 @@ void main() {
     final newsModelJson = NewsModel.fromEntity(newsEntity).toJson();
 
     mockFavorites = factoryListFavoritesToJson..add(newsModelJson);
+
+    factoryRemoveList = [...factoryListFavorites];
+    factoryRemoveList.removeWhere((news) => news.title == 'title');
+
     mockSuccess();
   });
 
@@ -65,6 +70,13 @@ void main() {
 
     verify(
         localStorage.save(key: 'favorites', value: jsonEncode(mockFavorites)));
+  });
+
+  test('Should remove from favorite list', () async {
+    await sut.save(news1);
+
+    verify(localStorage.save(
+        key: 'favorites', value: jsonEncode(factoryRemoveList)));
   });
 
   test('Should throw UnexpectedError if LocalStorage throws', () {

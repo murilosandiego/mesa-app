@@ -1,6 +1,8 @@
+import 'package:equatable/equatable.dart';
+
 import '../../domain/entities/news_entity.dart';
 
-class NewsModel extends NewsEntity {
+class NewsModel extends NewsEntity implements Equatable {
   NewsModel({
     this.title,
     this.description,

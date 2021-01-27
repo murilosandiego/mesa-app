@@ -23,8 +23,15 @@ class LocalSaveFavorite implements SaveFavorite {
     try {
       final favorites = await _loadFovorites();
 
+      final newsModel = NewsModel.fromEntity(newsEntity);
+
+      if (favorites.contains(newsModel)) {
+        favorites.remove(newsModel);
+      } else {
+        favorites.add(newsModel);
+      }
+
       final newsFavoriteToJson = favorites
-        ..add(NewsModel.fromEntity(newsEntity))
         ..map((newsEntity) => NewsModel.fromEntity(newsEntity).toJson());
 
       await localStorage.save(
