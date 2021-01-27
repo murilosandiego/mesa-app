@@ -22,7 +22,9 @@ class News extends StatelessWidget {
                 imageUrl: newsViewModel.imageUrl,
                 placeholder: (context, url) =>
                     Center(child: CircularProgressIndicator()),
-                errorWidget: (context, url, error) => Icon(Icons.error),
+                errorWidget: (context, url, error) => Image.asset(
+                  'lib/ui/assets/images/image_error.png',
+                ),
                 fit: BoxFit.cover,
               ),
             ),
@@ -39,7 +41,7 @@ class News extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(top: 7),
                   child: Text(
-                    newsViewModel.publishedAt.toString(),
+                    newsViewModel.publishedAt,
                     style: TextStyle(
                       fontStyle: FontStyle.italic,
                       fontSize: 13,
