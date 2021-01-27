@@ -1,15 +1,23 @@
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:mesa_news/domain/usecases/load_favorites.dart';
 import 'package:mesa_news/domain/usecases/load_news.dart';
 import 'package:mesa_news/domain/entities/news_entity.dart';
+import 'package:mesa_news/domain/usecases/save_favorite.dart';
 import 'package:mesa_news/ui/helpers/ui_error.dart';
 import 'package:mesa_news/ui/pages/feed/news_viewmodel.dart';
 import 'package:meta/meta.dart';
 
 class FeedPresenter extends GetxController {
   final LoadNews loadNews;
+  final LoadFavorites loadFavorites;
+  final SaveFavorite saveFavorite;
 
-  FeedPresenter({@required this.loadNews});
+  FeedPresenter({
+    @required this.loadNews,
+    @required this.loadFavorites,
+    @required this.saveFavorite,
+  });
 
   final _isLoading = true.obs;
   final _mainError = ''.obs;

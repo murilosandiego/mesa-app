@@ -12,7 +12,7 @@ void main() {
         url: 'v1/client/auth/news',
       ),
     );
-    Get.lazyPut<FeedPresenter>(() => FeedPresenter(loadNews: Get.find()));
+    // Get.lazyPut<FeedPresenter>(() => FeedPresenter(loadNews: Get.find(),));
   });
 
   test('Test Bindings', () {

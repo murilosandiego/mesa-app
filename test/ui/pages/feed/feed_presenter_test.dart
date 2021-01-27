@@ -1,6 +1,8 @@
+import 'package:mesa_news/domain/usecases/load_favorites.dart';
 import 'package:mesa_news/domain/usecases/load_news.dart';
 
 import 'package:mesa_news/domain/errors/domain_error.dart';
+import 'package:mesa_news/domain/usecases/save_favorite.dart';
 import 'package:mesa_news/ui/helpers/ui_error.dart';
 import 'package:mesa_news/ui/pages/feed/feed_presenter.dart';
 import 'package:mesa_news/ui/pages/feed/news_viewmodel.dart';
@@ -11,9 +13,15 @@ import '../../../mocks/mocks.dart';
 
 class LoadNewsSpy extends Mock implements LoadNews {}
 
+class LoadFavoritesSpy extends Mock implements LoadFavorites {}
+
+class SaveFavoritesSpy extends Mock implements SaveFavorite {}
+
 void main() {
   FeedPresenter sut;
   LoadNewsSpy loadNews;
+  LoadFavoritesSpy loadFavorites;
+  SaveFavoritesSpy saveFavorites;
 
   mockSuccess() =>
       when(loadNews.load()).thenAnswer((_) async => factoryListNews);
@@ -22,7 +30,11 @@ void main() {
 
   setUp(() {
     loadNews = LoadNewsSpy();
-    sut = FeedPresenter(loadNews: loadNews);
+    sut = FeedPresenter(
+      loadNews: loadNews,
+      saveFavorite: saveFavorites,
+      loadFavorites: loadFavorites,
+    );
 
     mockSuccess();
   });
