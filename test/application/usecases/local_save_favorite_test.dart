@@ -1,38 +1,38 @@
 import 'dart:convert';
-import 'dart:ffi';
 
 import 'package:faker/faker.dart';
+import 'package:mesa_news/application/models/news_model.dart';
 import 'package:mesa_news/application/storage/local_storage.dart';
+import 'package:mesa_news/application/usecases/local_save_favorites.dart';
 import 'package:mesa_news/domain/entities/news_entity.dart';
 import 'package:mesa_news/domain/errors/domain_error.dart';
-import 'package:mesa_news/domain/usecases/save_favorite.dart';
-
+import 'package:mesa_news/domain/usecases/load_favorites.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
-import 'package:meta/meta.dart';
+
+import '../../mocks/mocks.dart';
 
 class LocalStorageSpy extends Mock implements LocalStorage {}
 
-class LocalSaveFavorite implements SaveFavorite {
-  final LocalStorage localStorage;
-
-  LocalSaveFavorite({@required this.localStorage});
-
-  @override
-  Future<Void> save(NewsEntity newsEntity) {
-    throw UnimplementedError();
-  }
-}
+class LoadFavoritesSpy extends Mock implements LoadFavorites {}
 
 void main() {
-  LocalStorageSpy localStorage;
   LocalSaveFavorite sut;
+  LocalStorageSpy localStorage;
+  LoadFavorites loadFavorites;
   NewsEntity newsEntity;
-  List<NewsEntity> favorites;
+  List mockFavorites;
+
+  mockSuccess() =>
+      when(loadFavorites.load()).thenAnswer((_) async => factoryListFavorites);
 
   setUp(() {
+    loadFavorites = LoadFavoritesSpy();
     localStorage = LocalStorageSpy();
-    sut = LocalSaveFavorite(localStorage: localStorage);
+    sut = LocalSaveFavorite(
+      localStorage: localStorage,
+      loadFavorites: loadFavorites,
+    );
 
     newsEntity = NewsEntity(
       author: faker.person.name(),
@@ -45,16 +45,26 @@ void main() {
       url: faker.internet.httpsUrl(),
     );
 
-    favorites = List<NewsEntity>();
+    final newsModelJson = NewsModel.fromEntity(newsEntity).toJson();
 
-    favorites.add(newsEntity);
+    mockFavorites = factoryListFavoritesToJson..add(newsModelJson);
+    mockSuccess();
+  });
+
+  test(
+      'Should call the loadFavorites method of LoadFavorites use case with correct values',
+      () async {
+    await sut.save(newsEntity);
+
+    verify(loadFavorites.load());
   });
 
   test('Should call the save method of LocalStorage with correct values',
       () async {
     await sut.save(newsEntity);
 
-    verify(localStorage.save(key: 'favorites', value: jsonEncode(favorites)));
+    verify(
+        localStorage.save(key: 'favorites', value: jsonEncode(mockFavorites)));
   });
 
   test('Should throw UnexpectedError if LocalStorage throws', () {

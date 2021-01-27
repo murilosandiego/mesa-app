@@ -1,8 +1,9 @@
 import 'package:mesa_news/domain/usecases/load_news.dart';
-import 'package:mesa_news/domain/entities/news_entity.dart';
+
 import 'package:mesa_news/domain/errors/domain_error.dart';
 import 'package:mesa_news/ui/helpers/ui_error.dart';
 import 'package:mesa_news/ui/pages/feed/feed_presenter.dart';
+import 'package:mesa_news/ui/pages/feed/news_viewmodel.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
@@ -45,8 +46,7 @@ void main() {
       when(loadNews.load()).thenAnswer((_) async => factoryListNews);
       await sut.load();
 
-      expect(sut.news, isA<List<NewsEntity>>());
-      expect(sut.news, factoryListNews);
+      expect(sut.news, isA<List<NewsViewModel>>());
     });
 
     test('Should set UIError.unexpected if error occurs', () async {

@@ -21,6 +21,17 @@ class NewsModel extends NewsEntity {
   final String url;
   final String imageUrl;
 
+  factory NewsModel.fromEntity(NewsEntity newsEntity) => NewsModel(
+        author: newsEntity.author,
+        content: newsEntity.content,
+        description: newsEntity.description,
+        highlight: newsEntity.highlight,
+        imageUrl: newsEntity.imageUrl,
+        publishedAt: newsEntity.publishedAt,
+        title: newsEntity.title,
+        url: newsEntity.url,
+      );
+
   factory NewsModel.fromJson(Map<String, dynamic> json) => NewsModel(
         title: json["title"] == null ? null : json["title"],
         description: json["description"] == null ? null : json["description"],

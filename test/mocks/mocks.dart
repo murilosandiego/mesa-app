@@ -1,5 +1,6 @@
 import 'package:faker/faker.dart';
 import 'package:mesa_news/application/models/news_model.dart';
+import 'package:mesa_news/domain/entities/news_entity.dart';
 
 const apiNewsReponse = """
 {
@@ -82,7 +83,22 @@ List factoryListFavoritesToJson = [
   news2.toJson(),
 ];
 
-List factoryListFavorites = [
+List<NewsEntity> factoryListFavorites = [
   news1,
   news2,
 ];
+
+final newsEntity = NewsEntity(
+  author: faker.person.name(),
+  content: faker.lorem.sentence(),
+  description: faker.lorem.sentence(),
+  highlight: false,
+  imageUrl: faker.internet.httpsUrl(),
+  publishedAt: faker.date.dateTime(),
+  title: faker.lorem.sentence(),
+  url: faker.internet.httpsUrl(),
+);
+
+final newsModelJson = NewsModel.fromEntity(newsEntity).toJson();
+
+List factoryNewsModel = factoryListFavoritesToJson..add(newsModelJson);
