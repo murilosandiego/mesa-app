@@ -3,7 +3,6 @@ import 'dart:ffi';
 
 import 'package:faker/faker.dart';
 import 'package:mesa_news/application/storage/local_storage.dart';
-import 'package:mesa_news/domain/entities/account_entity.dart';
 import 'package:mesa_news/domain/entities/news_entity.dart';
 import 'package:mesa_news/domain/errors/domain_error.dart';
 import 'package:mesa_news/domain/usecases/save_favorite.dart';

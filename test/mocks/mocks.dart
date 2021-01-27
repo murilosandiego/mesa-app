@@ -1,3 +1,4 @@
+import 'package:faker/faker.dart';
 import 'package:mesa_news/application/models/news_model.dart';
 
 const apiNewsReponse = """
@@ -52,4 +53,36 @@ final factoryListNews = [
       highlight: true,
       url: "https://fake.news",
       imageUrl: "https://via.placeholder.com/600x300")
+];
+
+final news1 = NewsModel(
+  author: faker.person.name(),
+  content: faker.lorem.sentence(),
+  description: faker.lorem.sentence(),
+  highlight: false,
+  imageUrl: faker.internet.httpsUrl(),
+  publishedAt: faker.date.dateTime(),
+  title: faker.lorem.sentence(),
+  url: faker.internet.httpsUrl(),
+);
+
+final news2 = NewsModel(
+  author: faker.person.name(),
+  content: faker.lorem.sentence(),
+  description: faker.lorem.sentence(),
+  highlight: false,
+  imageUrl: faker.internet.httpsUrl(),
+  publishedAt: faker.date.dateTime(),
+  title: faker.lorem.sentence(),
+  url: faker.internet.httpsUrl(),
+);
+
+List factoryListFavoritesToJson = [
+  news1.toJson(),
+  news2.toJson(),
+];
+
+List factoryListFavorites = [
+  news1,
+  news2,
 ];
