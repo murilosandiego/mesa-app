@@ -17,6 +17,7 @@ class FeedPresenter extends GetxController {
   bool get isLoading => _isLoading.value;
 
   final news = RxList<NewsViewModel>();
+  final highlights = RxList<NewsViewModel>();
 
   String get mainError => _mainError.value;
 
@@ -24,6 +25,12 @@ class FeedPresenter extends GetxController {
     try {
       final result = await loadNews.load();
       news.assignAll(result.map((news) => toViewModel(news: news)));
+
+      final highlightNewsEntity =
+          result.where((news) => news.highlight == true).toList();
+
+      highlights.assignAll(
+          highlightNewsEntity.map((news) => toViewModel(news: news)));
     } catch (_) {
       _mainError.value = UIError.unexpected.description;
     } finally {
