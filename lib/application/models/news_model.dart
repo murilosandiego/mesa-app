@@ -33,4 +33,21 @@ class NewsModel extends NewsEntity {
         url: json["url"] == null ? null : json["url"],
         imageUrl: json["image_url"] == null ? null : json["image_url"],
       );
+
+  Map<String, dynamic> toJson() => {
+        "title": title == null ? null : title,
+        "description": description == null ? null : description,
+        "content": content == null ? null : content,
+        "author": author == null ? null : author,
+        "published_at":
+            publishedAt == null ? null : publishedAt.toIso8601String(),
+        "highlight": highlight == null ? null : highlight,
+        "url": url == null ? null : url,
+        "image_url": imageUrl == null ? null : imageUrl,
+      };
+
+  @override
+  String toString() {
+    return 'NewsModel(title: $title, description: $description, content: $content, author: $author, publishedAt: $publishedAt, highlight: $highlight, url: $url, imageUrl: $imageUrl)';
+  }
 }
