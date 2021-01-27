@@ -20,10 +20,9 @@ class RemoteLoadNews implements LoadNews {
     try {
       final httpResponse = await httpClient.request(url: url, method: 'get');
       final news = (httpResponse['data'] as List)
-          .map(
-            (json) => NewsModel.fromJson(json),
-          )
-          .toList();
+          .map((json) => NewsModel.fromJson(json))
+          .toList()
+            ..sort((a, b) => b.publishedAt.compareTo(a.publishedAt));
 
       return news;
     } catch (_) {
