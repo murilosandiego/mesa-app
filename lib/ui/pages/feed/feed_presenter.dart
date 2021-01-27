@@ -4,6 +4,7 @@ import 'package:mesa_news/domain/usecases/load_favorites.dart';
 import 'package:mesa_news/domain/usecases/load_news.dart';
 import 'package:mesa_news/domain/entities/news_entity.dart';
 import 'package:mesa_news/domain/usecases/save_favorite.dart';
+import 'package:mesa_news/ui/helpers/app_snackbar.dart';
 import 'package:mesa_news/ui/helpers/ui_error.dart';
 import 'package:mesa_news/ui/pages/feed/news_viewmodel.dart';
 import 'package:meta/meta.dart';
@@ -21,24 +22,25 @@ class FeedPresenter extends GetxController {
 
   final _isLoading = true.obs;
   final _mainError = ''.obs;
+  List<NewsEntity> _listAllNewsEntity;
+  List<NewsEntity> _listFavorites;
 
   bool get isLoading => _isLoading.value;
 
   final news = RxList<NewsViewModel>();
-  final highlights = RxList<NewsViewModel>();
 
   String get mainError => _mainError.value;
 
   load() async {
     try {
-      final result = await loadNews.load();
-      news.assignAll(result.map((news) => toViewModel(news: news)));
+      _listAllNewsEntity = await loadNews.load();
+      _listFavorites = await loadFavorites.load();
 
-      final highlightNewsEntity =
-          result.where((news) => news.highlight == true).toList();
+      news.assignAll(_listAllNewsEntity.map((news) {
+        final isFavorite = _listFavorites.contains(news);
 
-      highlights.assignAll(
-          highlightNewsEntity.map((news) => toViewModel(news: news)));
+        return toViewModel(news: news, isFavorite: isFavorite);
+      }));
     } catch (_) {
       _mainError.value = UIError.unexpected.description;
     } finally {
@@ -46,7 +48,21 @@ class FeedPresenter extends GetxController {
     }
   }
 
-  toViewModel({@required NewsEntity news, DateTime now}) {
+  Future<void> addFavorite(NewsViewModel newsViewModel) async {
+    try {
+      final newsEntity = _listAllNewsEntity
+          .firstWhere((news) => news.title == newsViewModel.title);
+
+      await saveFavorite.save(newsEntity);
+
+      newsViewModel.isFavorite = !newsViewModel.isFavorite;
+    } catch (_) {
+      AppSnackbar.showError(message: 'Não possível adicionar aos favoritos');
+    }
+  }
+
+  NewsViewModel toViewModel(
+      {@required NewsEntity news, DateTime now, bool isFavorite}) {
     final _now = now ?? DateTime.now();
 
     final difference = _now.difference(news.publishedAt).inHours;
@@ -55,13 +71,19 @@ class FeedPresenter extends GetxController {
         ? '$difference horas atrás'
         : DateFormat('dd/MM/yyyy hh:mm').format(news.publishedAt);
 
-    return NewsViewModel(
-      description: news.description,
-      imageUrl: news.imageUrl,
-      publishedAt: publishedAt,
-      title: news.title,
-      url: news.url,
-    );
+    final newsViewModel = NewsViewModel(
+        description: news.description,
+        imageUrl: news.imageUrl,
+        publishedAt: publishedAt,
+        title: news.title,
+        url: news.url,
+        highlight: news.highlight);
+
+    if (isFavorite) {
+      newsViewModel.isFavorite = true;
+    }
+
+    return newsViewModel;
   }
 
   @override

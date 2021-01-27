@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:get/state_manager.dart';
 
 class NewsViewModel extends Equatable {
   NewsViewModel({
@@ -20,6 +21,11 @@ class NewsViewModel extends Equatable {
   final bool highlight;
   final String url;
   final String imageUrl;
+  final _isFavorite = false.obs;
+
+  bool get isFavorite => _isFavorite.value;
+
+  set isFavorite(bool value) => _isFavorite.value = value;
 
   @override
   List get props => [
@@ -31,5 +37,6 @@ class NewsViewModel extends Equatable {
         highlight,
         url,
         imageUrl,
+        isFavorite
       ];
 }

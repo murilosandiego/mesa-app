@@ -71,11 +71,8 @@ class FeedPage extends StatelessWidget {
                       itemCount: presenter.news.length,
                       itemBuilder: (_, index) {
                         final newsViewModel = presenter.news[index];
-                        return GestureDetector(
-                          onTap: () => Get.toNamed(AppPages.news),
-                          child: News(
-                            newsViewModel: newsViewModel,
-                          ),
+                        return News(
+                          newsViewModel: newsViewModel,
                         );
                       },
                     ),

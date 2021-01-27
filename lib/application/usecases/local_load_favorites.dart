@@ -18,9 +18,11 @@ class LocalLoadFavorites implements LoadFavorites {
     try {
       final localStorageResult = await localStorage.fetch(key: 'favorites');
 
-      return (jsonDecode(localStorageResult) as List)
-          .map((json) => NewsModel.fromJson(json))
-          .toList();
+      return localStorageResult == null
+          ? null
+          : (jsonDecode(localStorageResult) as List)
+              .map((json) => NewsModel.fromJson(json))
+              .toList();
     } catch (_) {
       throw DomainError.unexpected;
     }

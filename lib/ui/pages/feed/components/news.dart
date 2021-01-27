@@ -1,5 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:mesa_news/ui/pages/feed/feed_presenter.dart';
 import 'package:mesa_news/ui/pages/feed/news_viewmodel.dart';
 
 class News extends StatelessWidget {
@@ -62,31 +64,38 @@ class __Bookmark extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 2, left: 8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 9, right: 14),
-            child: Icon(
-              Icons.bookmark_outline,
-              color: Theme.of(context).primaryColor,
-              size: 25,
+    final presenter = Get.find<FeedPresenter>();
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        IconButton(
+          onPressed: () => presenter.addFavorite(newsViewModel),
+          icon: Obx(
+            () => newsViewModel.isFavorite
+                ? Icon(
+                    Icons.bookmark,
+                    color: Theme.of(context).primaryColor,
+                    size: 25,
+                  )
+                : Icon(
+                    Icons.bookmark_outline,
+                    color: Theme.of(context).primaryColor,
+                    size: 25,
+                  ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 7),
+          child: Text(
+            newsViewModel.publishedAt,
+            style: TextStyle(
+              fontStyle: FontStyle.italic,
+              fontSize: 13,
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 7),
-            child: Text(
-              newsViewModel.publishedAt,
-              style: TextStyle(
-                fontStyle: FontStyle.italic,
-                fontSize: 13,
-              ),
-            ),
-          )
-        ],
-      ),
+        )
+      ],
     );
   }
 }

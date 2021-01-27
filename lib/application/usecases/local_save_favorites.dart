@@ -21,7 +21,11 @@ class LocalSaveFavorite implements SaveFavorite {
   @override
   Future<void> save(NewsEntity newsEntity) async {
     try {
-      final favorites = await _loadFovorites();
+      List<NewsEntity> favorites = await _loadFovorites();
+
+      if (favorites == null) {
+        favorites = List<NewsEntity>();
+      }
 
       final newsModel = NewsModel.fromEntity(newsEntity);
 
