@@ -1,6 +1,6 @@
 import 'package:get/instance_manager.dart';
 import 'package:mesa_news/application/usecases/remote_load_news.dart';
-import 'package:mesa_news/domain/entities/load_news.dart';
+import 'package:mesa_news/domain/usecases/load_news.dart';
 import 'package:mesa_news/ui/pages/feed/feed_presenter.dart';
 import 'package:test/test.dart';
 

@@ -1,6 +1,6 @@
 import 'package:meta/meta.dart';
 
-import '../../domain/entities/load_news.dart';
+import '../../domain/usecases/load_news.dart';
 import '../../domain/entities/news_entity.dart';
 import '../../domain/errors/domain_error.dart';
 import '../http/http_client.dart';

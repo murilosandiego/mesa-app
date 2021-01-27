@@ -1,4 +1,4 @@
-import 'package:mesa_news/domain/entities/load_news.dart';
+import 'package:mesa_news/domain/usecases/load_news.dart';
 import 'package:mesa_news/domain/entities/news_entity.dart';
 import 'package:mesa_news/domain/errors/domain_error.dart';
 import 'package:mesa_news/ui/helpers/ui_error.dart';
