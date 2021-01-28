@@ -23,10 +23,6 @@ class LocalSaveFavorite implements SaveFavorite {
     try {
       List<NewsEntity> favorites = await _loadFovorites();
 
-      if (favorites == null) {
-        favorites = List<NewsEntity>();
-      }
-
       final newsModel = NewsModel.fromEntity(newsEntity);
 
       if (favorites.contains(newsModel)) {
@@ -46,7 +42,9 @@ class LocalSaveFavorite implements SaveFavorite {
   }
 
   Future<List<NewsEntity>> _loadFovorites() async {
-    final favorites = loadFavorites.load();
+    final favorites = await loadFavorites.load();
+    if (favorites == null) return List<NewsEntity>();
+
     return favorites;
   }
 }

@@ -47,7 +47,7 @@ void main() {
 
     verify(
       httpClient.request(
-        url: url,
+        url: '$url?current_page=&per_page=&published_at=',
         method: 'get',
       ),
     );

@@ -32,4 +32,6 @@ class NewsEntity extends Equatable {
         url,
         imageUrl,
       ];
+
+  bool get stringify => true;
 }

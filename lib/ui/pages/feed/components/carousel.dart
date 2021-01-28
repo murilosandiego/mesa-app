@@ -143,7 +143,7 @@ class _Highlights extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(top: 7),
                         child: Text(
-                          newsViewModel.publishedAt,
+                          newsViewModel.publishedAtFormated,
                           style: TextStyle(
                             fontStyle: FontStyle.italic,
                             fontSize: 13,

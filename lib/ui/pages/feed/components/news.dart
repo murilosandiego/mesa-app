@@ -40,15 +40,20 @@ class _ImageHeader extends StatelessWidget {
       height: 128,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(3),
-        child: CachedNetworkImage(
-          imageUrl: newsViewModel.imageUrl,
-          placeholder: (context, url) =>
-              Center(child: CircularProgressIndicator()),
-          errorWidget: (context, url, error) => Image.asset(
-            'lib/ui/assets/images/image_error.png',
-          ),
-          fit: BoxFit.cover,
-        ),
+        child: newsViewModel.imageUrl != null
+            ? CachedNetworkImage(
+                imageUrl: newsViewModel.imageUrl,
+                placeholder: (context, url) =>
+                    Center(child: CircularProgressIndicator()),
+                errorWidget: (context, url, error) => Image.asset(
+                  'lib/ui/assets/images/image_error.png',
+                ),
+                fit: BoxFit.cover,
+              )
+            : Image.asset(
+                'lib/ui/assets/images/image_error.png',
+                fit: BoxFit.cover,
+              ),
       ),
     );
   }
@@ -88,7 +93,7 @@ class __Bookmark extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(top: 7),
           child: Text(
-            newsViewModel.publishedAt,
+            newsViewModel.publishedAtFormated,
             style: TextStyle(
               fontStyle: FontStyle.italic,
               fontSize: 13,

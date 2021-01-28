@@ -23,35 +23,54 @@ class FeedPresenter extends GetxController {
 
   final _isLoading = true.obs;
   final _mainError = ''.obs;
-  List<NewsEntity> _listAllNewsEntity;
-  List<NewsEntity> _listFavorites;
-
-  bool get isLoading => _isLoading.value;
+  final _lastPage = false.obs;
+  final _isFavorite = false.obs;
 
   final news = RxList<NewsViewModel>();
 
+  List<NewsEntity> _listNews;
+  List<NewsEntity> _listFavorites;
+
+  int currentPage = 1;
+  FilterParams _filterParams;
+
+  bool get isLoading => _isLoading.value;
   String get mainError => _mainError.value;
+  bool get lastPage => _lastPage.value;
+  bool get isFavorite => _isFavorite.value;
 
-  load({FilterParams filterParams}) async {
-    _isLoading.value = true;
+  Future<void> load({FilterParams filterParams}) async {
     try {
-      _listAllNewsEntity = await loadNews.load(
-        publishedAt: filterParams?.filterDate?.date,
-      );
+      _filterParams = filterParams;
+      _isLoading.value = true;
 
-      _listFavorites = await loadFavorites.load();
-
+      await _loadFavorites();
       if (filterParams?.isFavorite == true) {
-        news.assignAll(_listFavorites.map((news) {
-          return toViewModel(news: news, isFavorite: true);
-        }));
+        _isFavorite.value = true;
+        _assingFavoriteList();
       } else {
-        news.assignAll(_listAllNewsEntity.map((news) {
-          final isFavorite = _listFavorites.contains(news);
-
-          return toViewModel(news: news, isFavorite: isFavorite);
-        }));
+        await _loadNews();
+        _assingNewsList();
       }
+    } catch (_) {
+      _mainError.value = UIError.unexpected.description;
+    } finally {
+      _isLoading.value = false;
+      _lastPage.value = false;
+    }
+  }
+
+  void loadMoreNews() async {
+    try {
+      currentPage++;
+      if (_filterParams == null) {
+        _filterParams = FilterParams();
+      }
+
+      _filterParams.currentPage = currentPage;
+
+      await _loadNews();
+      _addAllNewsList();
     } catch (_) {
       _mainError.value = UIError.unexpected.description;
     } finally {
@@ -61,10 +80,7 @@ class FeedPresenter extends GetxController {
 
   Future<void> addFavorite(NewsViewModel newsViewModel) async {
     try {
-      final newsEntity = _listAllNewsEntity
-          .firstWhere((news) => news.title == newsViewModel.title);
-
-      await saveFavorite.save(newsEntity);
+      await saveFavorite.save(newsViewModel.toEntity(newsViewModel));
 
       newsViewModel.isFavorite = !newsViewModel.isFavorite;
     } catch (_) {
@@ -72,23 +88,69 @@ class FeedPresenter extends GetxController {
     }
   }
 
-  NewsViewModel toViewModel(
+  Future<void> _loadNews() async {
+    _isFavorite.value = false;
+    final newsEntity = await loadNews.load(
+      publishedAt: _filterParams?.filterDate?.dateString,
+      currentPage: _filterParams?.currentPage.toString(),
+    );
+
+    if (newsEntity.isEmpty) {
+      _lastPage.value = true;
+    }
+
+    _listNews = newsEntity;
+  }
+
+  void _assingNewsList() {
+    news.assignAll(_listNews.map((news) {
+      final isFavorite =
+          _listFavorites == null ? false : _listFavorites.contains(news);
+
+      return _toViewModel(news: news, isFavorite: isFavorite);
+    }));
+  }
+
+  void _addAllNewsList() {
+    news.addAll(_listNews.map((news) {
+      final isFavorite =
+          _listFavorites == null ? false : _listFavorites.contains(news);
+
+      return _toViewModel(news: news, isFavorite: isFavorite);
+    }));
+  }
+
+  Future<void> _loadFavorites() async {
+    final result = await loadFavorites.load();
+    if (_filterParams?.filterDate?.date == null) {
+      _listFavorites = result;
+      return;
+    }
+
+    final favoriteFilter = result
+        .where(
+            (element) => element.publishedAt == _filterParams.filterDate.date)
+        .toList();
+
+    _listFavorites = favoriteFilter;
+  }
+
+  void _assingFavoriteList() {
+    news.assignAll(_listFavorites
+        .map((news) => _toViewModel(news: news, isFavorite: true)));
+  }
+
+  NewsViewModel _toViewModel(
       {@required NewsEntity news, DateTime now, bool isFavorite}) {
+    final newsViewModel = NewsViewModel.fromEntity(news);
+
     final _now = now ?? DateTime.now();
-
     final difference = _now.difference(news.publishedAt).inHours;
-
-    final publishedAt = difference <= 24
+    final publishedAtFormated = difference <= 24
         ? '$difference horas atrás'
         : DateFormat('dd/MM/yyyy hh:mm').format(news.publishedAt);
 
-    final newsViewModel = NewsViewModel(
-        description: news.description,
-        imageUrl: news.imageUrl,
-        publishedAt: publishedAt,
-        title: news.title,
-        url: news.url,
-        highlight: news.highlight);
+    newsViewModel.publishedAtFormated = publishedAtFormated;
 
     if (isFavorite) {
       newsViewModel.isFavorite = true;

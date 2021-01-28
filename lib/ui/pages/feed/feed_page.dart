@@ -7,11 +7,35 @@ import 'package:mesa_news/ui/pages/feed/feed_presenter.dart';
 
 import 'components/news.dart';
 
-class FeedPage extends StatelessWidget {
+class FeedPage extends StatefulWidget {
+  @override
+  _FeedPageState createState() => _FeedPageState();
+}
+
+class _FeedPageState extends State<FeedPage> {
+  ScrollController _scrollController;
+  final presenter = Get.find<FeedPresenter>();
+
+  _scrollListener() {
+    if (_scrollController.position.atEdge) {
+      if (_scrollController.position.pixels == 0) {
+      } else {
+        if (!presenter.isFavorite) {
+          presenter.loadMoreNews();
+        }
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    _scrollController = ScrollController();
+    _scrollController.addListener(_scrollListener);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final presenter = Get.find<FeedPresenter>();
-
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -45,11 +69,21 @@ class FeedPage extends StatelessWidget {
             );
           }
 
+          if (presenter?.news?.length == 0 && presenter.isLoading == false) {
+            return Center(
+              child: ReloadScreen(
+                error: 'Nenhum registro encontrado',
+                reload: presenter.load,
+              ),
+            );
+          }
+
           return presenter.isLoading
               ? Center(
                   child: CircularProgressIndicator(),
                 )
               : ListView(
+                  controller: _scrollController,
                   children: [
                     Padding(
                       padding:
@@ -73,11 +107,21 @@ class FeedPage extends StatelessWidget {
                       separatorBuilder: (_, __) => Divider(),
                       physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
-                      itemCount: presenter.news.length,
+                      itemCount: presenter.lastPage || presenter.isFavorite
+                          ? presenter.news.length
+                          : presenter.news.length + 1,
                       itemBuilder: (_, index) {
-                        final newsViewModel = presenter.news[index];
-                        return News(
-                          newsViewModel: newsViewModel,
+                        if (index < presenter.news.length) {
+                          final newsViewModel = presenter.news[index];
+                          return News(
+                            newsViewModel: newsViewModel,
+                          );
+                        }
+                        return Container(
+                          height: 40,
+                          width: 40,
+                          alignment: Alignment.center,
+                          child: CircularProgressIndicator(),
                         );
                       },
                     ),

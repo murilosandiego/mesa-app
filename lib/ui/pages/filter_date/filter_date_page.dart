@@ -28,6 +28,10 @@ class FilterDatePage extends StatelessWidget {
       body: ListView(
         children: [
           ListTile(
+            title: Text('Último ano'),
+            onTap: () => Get.back(result: FilterDate.lastYear),
+          ),
+          ListTile(
             title: Text('Último mês'),
             onTap: () => Get.back(result: FilterDate.lastMonth),
           ),
