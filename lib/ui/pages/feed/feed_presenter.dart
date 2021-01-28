@@ -52,6 +52,7 @@ class FeedPresenter extends GetxController {
         _assingNewsList();
       }
     } catch (_) {
+      print(_);
       _mainError.value = UIError.unexpected.description;
     } finally {
       _isLoading.value = false;
@@ -121,6 +122,10 @@ class FeedPresenter extends GetxController {
 
   Future<void> _loadFavorites() async {
     final result = await loadFavorites.load();
+    if (result == null) {
+      return null;
+    }
+
     if (_filterParams?.filterDate?.date == null) {
       _listFavorites = result;
       return;

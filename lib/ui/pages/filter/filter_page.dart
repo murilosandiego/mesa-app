@@ -95,6 +95,8 @@ class FilterPage extends StatelessWidget {
               height: presenter.updated ? 60 : 0,
               width: double.infinity,
               child: RaisedButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(0)),
                 onPressed: () => Get.back(
                   result: FilterParams(
                     filterDate: presenter.filterDate,

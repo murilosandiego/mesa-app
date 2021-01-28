@@ -4,6 +4,7 @@ import 'package:mesa_news/main/pages/app_pages.dart';
 import 'package:mesa_news/ui/components/reload_screen.dart';
 import 'package:mesa_news/ui/pages/feed/components/carousel.dart';
 import 'package:mesa_news/ui/pages/feed/feed_presenter.dart';
+import 'package:mesa_news/ui/pages/filter/filter_presenter.dart';
 
 import 'components/news.dart';
 
@@ -72,9 +73,11 @@ class _FeedPageState extends State<FeedPage> {
           if (presenter?.news?.length == 0 && presenter.isLoading == false) {
             return Center(
               child: ReloadScreen(
-                error: 'Nenhum registro encontrado',
-                reload: presenter.load,
-              ),
+                  error: 'Nenhum registro encontrado',
+                  reload: () {
+                    Get.find<FilterPresenter>().clearFilter();
+                    presenter.load();
+                  }),
             );
           }
 
