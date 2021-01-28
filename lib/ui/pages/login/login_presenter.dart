@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:mesa_news/ui/helpers/field_validator.dart';
 import 'package:meta/meta.dart';
 
 import '../../../domain/errors/domain_error.dart';
@@ -41,12 +42,12 @@ class LoginPresenter extends GetxController {
 
   void handleEmail(String email) {
     _email = email;
-    _validateEmail(email);
+    _emailError.value = Validator.emailField(email);
   }
 
   void handlePassword(String password) {
     _password = password;
-    _validatePassword(password);
+    _passwordError.value = Validator.requiredField(password);
   }
 
   auth() async {
@@ -58,7 +59,7 @@ class LoginPresenter extends GetxController {
 
       await saveCurrentAccount.save(account);
 
-      _navigateTo.value = AppPages.welcome;
+      _navigateTo.value = AppPages.feed;
     } on DomainError catch (error) {
       _mainError.update((_) {});
       if (error == DomainError.invalidCredentials) {
@@ -79,8 +80,8 @@ class LoginPresenter extends GetxController {
       _password != null;
 
   void _handleNavigation() {
-    _navigationWorker = ever(_navigateTo, (_) {
-      Get.offAndToNamed(AppPages.welcome);
+    _navigationWorker = ever(_navigateTo, (page) {
+      Get.offAllNamed(page);
     });
   }
 
@@ -90,25 +91,6 @@ class LoginPresenter extends GetxController {
 
       AppSnackbar.showError(message: error.description);
     });
-  }
-
-  _validateEmail(String email) {
-    if (email == null) {
-      _emailError.value = null;
-      return;
-    }
-
-    if (email?.isEmpty == true) {
-      _emailError.value = UIError.requiredField;
-      return;
-    }
-
-    _emailError.value = email?.isEmail == true ? null : UIError.invalidEmail;
-  }
-
-  _validatePassword(String password) {
-    _passwordError.value =
-        password?.isEmpty == true ? UIError.requiredField : null;
   }
 
   @override

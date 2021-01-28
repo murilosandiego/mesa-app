@@ -4,7 +4,8 @@ enum UIError {
   unexpected,
   invalidCredentials,
   emailInUse,
-  invalidEmail
+  invalidEmail,
+  passwordConfirm
 }
 
 extension UIErrorExtension on UIError {
@@ -20,6 +21,8 @@ extension UIErrorExtension on UIError {
         return 'O email já está em uso.';
       case UIError.invalidEmail:
         return 'E-mail inválido';
+      case UIError.passwordConfirm:
+        return 'As senhas são diferentes';
       default:
         return 'Algo errado aconteceu. Tente novamente em breve.';
     }

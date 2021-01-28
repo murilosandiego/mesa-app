@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:mesa_news/main/bindinds/signup_bindind.dart';
+import 'package:mesa_news/ui/pages/signup/signup_page.dart';
 
 import '../../ui/pages/feed/feed_page.dart';
 import '../../ui/pages/filter/filter_page.dart';
@@ -20,6 +22,7 @@ abstract class AppPages {
   static const news = '/news';
   static const filter = '/filter';
   static const filterDate = '/filter-date';
+  static const sigunp = '/signup';
 
   static final pages = [
     GetPage(
@@ -30,6 +33,11 @@ abstract class AppPages {
     GetPage(
       name: welcome,
       page: () => WelcomePage(),
+    ),
+    GetPage(
+      name: sigunp,
+      page: () => SignupPage(),
+      binding: SignupBinding(),
     ),
     GetPage(
       name: login,
@@ -45,7 +53,11 @@ abstract class AppPages {
       name: news,
       page: () => NewsPage(newsViewModel: Get.arguments),
     ),
-    GetPage(name: filter, page: () => FilterPage(), binding: FilterBinding()),
+    GetPage(
+      name: filter,
+      page: () => FilterPage(),
+      binding: FilterBinding(),
+    ),
     GetPage(
       name: filterDate,
       page: () => FilterDatePage(),

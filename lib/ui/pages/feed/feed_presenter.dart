@@ -25,7 +25,6 @@ class FeedPresenter extends GetxController {
   final _mainError = ''.obs;
   final _lastPage = false.obs;
   final _isFavorite = false.obs;
-
   final news = RxList<NewsViewModel>();
 
   List<NewsEntity> _listNews;
@@ -160,8 +159,8 @@ class FeedPresenter extends GetxController {
   }
 
   @override
-  void onInit() {
-    super.onInit();
+  void onReady() {
+    super.onReady();
     load();
   }
 }
