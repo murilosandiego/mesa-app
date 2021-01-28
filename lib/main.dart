@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       title: 'MESA News',
       theme: makeAppTheme(),
       getPages: AppPages.pages,
-      initialRoute: AppPages.welcome,
+      initialRoute: AppPages.splash,
     );
   }
 }
