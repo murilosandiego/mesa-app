@@ -60,7 +60,7 @@ class FeedPresenter extends GetxController {
     }
   }
 
-  void loadMoreNews() async {
+  Future<void> loadMoreNews() async {
     try {
       currentPage++;
       if (_filterParams == null) {

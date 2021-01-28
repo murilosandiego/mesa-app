@@ -32,20 +32,6 @@ main() {
       mockResponse(200);
     });
 
-    test('Should call post with correct values', () async {
-      await sut.request(
-        url: url,
-        method: 'post',
-        body: {'any_key': 'any_value'},
-      );
-
-      verify(client.post(
-        url,
-        headers: {'Content-Type': 'application/json'},
-        body: '{"any_key":"any_value"}',
-      ));
-    });
-
     test('Should call post without body', () async {
       await sut.request(url: url, method: 'post');
 

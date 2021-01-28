@@ -50,7 +50,7 @@ class HttpAdapter implements HttpClient {
       case 204:
         return null;
       case 400:
-        throw HttpError.unauthorized;
+        throw HttpError.badRequest;
       case 401:
         throw HttpError.unauthorized;
       case 403:

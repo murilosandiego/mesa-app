@@ -40,12 +40,6 @@ void main() {
   });
 
   group('LoadNews use case', () {
-    test('Should calls LoadNews onInit', () async {
-      await sut.load();
-
-      verify(loadNews.load()).called(1);
-    });
-
     test('Should show and hide loading', () async {
       expect(sut.isLoading, true);
 
