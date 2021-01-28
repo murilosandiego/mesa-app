@@ -43,7 +43,7 @@ abstract class AppPages {
     ),
     GetPage(
       name: news,
-      page: () => NewsPage(),
+      page: () => NewsPage(newsViewModel: Get.arguments),
     ),
     GetPage(name: filter, page: () => FilterPage(), binding: FilterBinding()),
     GetPage(

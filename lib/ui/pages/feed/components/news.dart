@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mesa_news/main/pages/app_pages.dart';
 import 'package:mesa_news/ui/pages/feed/feed_presenter.dart';
 import 'package:mesa_news/ui/pages/feed/news_viewmodel.dart';
 
@@ -36,24 +37,27 @@ class _ImageHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 128,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(3),
-        child: newsViewModel.imageUrl != null
-            ? CachedNetworkImage(
-                imageUrl: newsViewModel.imageUrl,
-                placeholder: (context, url) =>
-                    Center(child: CircularProgressIndicator()),
-                errorWidget: (context, url, error) => Image.asset(
+    return InkWell(
+      onTap: () => Get.toNamed(AppPages.news, arguments: newsViewModel),
+      child: Container(
+        height: 128,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(3),
+          child: newsViewModel.imageUrl != null
+              ? CachedNetworkImage(
+                  imageUrl: newsViewModel.imageUrl,
+                  placeholder: (context, url) =>
+                      Center(child: CircularProgressIndicator()),
+                  errorWidget: (context, url, error) => Image.asset(
+                    'lib/ui/assets/images/image_error.png',
+                  ),
+                  fit: BoxFit.cover,
+                )
+              : Image.asset(
                   'lib/ui/assets/images/image_error.png',
+                  fit: BoxFit.cover,
                 ),
-                fit: BoxFit.cover,
-              )
-            : Image.asset(
-                'lib/ui/assets/images/image_error.png',
-                fit: BoxFit.cover,
-              ),
+        ),
       ),
     );
   }
@@ -115,11 +119,14 @@ class _Title extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 11, bottom: 8),
-      child: Text(
-        newsViewModel.title,
-        style: Theme.of(context).textTheme.headline3,
+    return InkWell(
+      onTap: () => Get.toNamed(AppPages.news, arguments: newsViewModel),
+      child: Padding(
+        padding: const EdgeInsets.only(top: 11, bottom: 8),
+        child: Text(
+          newsViewModel.title,
+          style: Theme.of(context).textTheme.headline3,
+        ),
       ),
     );
   }

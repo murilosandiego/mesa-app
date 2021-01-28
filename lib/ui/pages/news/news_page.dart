@@ -1,10 +1,18 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mesa_news/ui/pages/feed/feed_presenter.dart';
+import 'package:mesa_news/ui/pages/feed/news_viewmodel.dart';
 
 class NewsPage extends StatelessWidget {
+  final NewsViewModel newsViewModel;
+
+  const NewsPage({@required this.newsViewModel});
+
   @override
   Widget build(BuildContext context) {
+    final presenter = Get.find<FeedPresenter>();
+
     return Scaffold(
       appBar: AppBar(
           leading: IconButton(
@@ -16,7 +24,7 @@ class NewsPage extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  'Amazon, Walmart and others battle price dd gouging on coronavirus-related products - CNBC',
+                  newsViewModel.title,
                   style: TextStyle(
                     fontSize: 13,
                   ),
@@ -40,13 +48,20 @@ class NewsPage extends StatelessWidget {
             height: 195,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(3),
-              child: CachedNetworkImage(
-                imageUrl:
-                    'https://image.cnbcfm.com/api/v1/image/106422372-1583253995153rtx7ashh.jpg?v=1583254080',
-                placeholder: (context, url) => CircularProgressIndicator(),
-                errorWidget: (context, url, error) => Icon(Icons.error),
-                fit: BoxFit.cover,
-              ),
+              child: newsViewModel.imageUrl != null
+                  ? CachedNetworkImage(
+                      imageUrl: newsViewModel.imageUrl,
+                      placeholder: (context, url) =>
+                          Center(child: CircularProgressIndicator()),
+                      errorWidget: (context, url, error) => Image.asset(
+                        'lib/ui/assets/images/image_error.png',
+                      ),
+                      fit: BoxFit.cover,
+                    )
+                  : Image.asset(
+                      'lib/ui/assets/images/image_error.png',
+                      fit: BoxFit.cover,
+                    ),
             ),
           ),
           Padding(
@@ -54,14 +69,26 @@ class NewsPage extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 9, right: 14),
-                  child: Image.asset('lib/ui/assets/icons/saved.png'),
+                IconButton(
+                  onPressed: () => presenter.addFavorite(newsViewModel),
+                  icon: Obx(
+                    () => newsViewModel.isFavorite
+                        ? Icon(
+                            Icons.bookmark,
+                            color: Theme.of(context).primaryColor,
+                            size: 25,
+                          )
+                        : Icon(
+                            Icons.bookmark_outline,
+                            color: Theme.of(context).primaryColor,
+                            size: 25,
+                          ),
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 7),
                   child: Text(
-                    '16 horas atrás',
+                    newsViewModel.publishedAtFormated,
                     style: TextStyle(
                       fontStyle: FontStyle.italic,
                       fontSize: 13,
@@ -74,12 +101,12 @@ class NewsPage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(top: 26, bottom: 12),
             child: Text(
-              'Amazon, Walmart and others battle price dd gouging on coronavirus-related products - CNBC',
+              newsViewModel.description,
               style: Theme.of(context).textTheme.headline1,
             ),
           ),
           Text(
-            'Amazon, eBay, Walmart \n\n asodijf   asdpoif jsdi fisdf  sd\r asd ofijas dfo asodij asdfpoi jasdpoi asdpfoijasdfpoijasd fpoaisjdf apsoidfj asdpfoij asdpfoij asdfpoij asdfdf  sdfi sdfasdoijf asdofij  jsdifj jijsdf lorem  and Etsy  With many products sold out in stores, shoppers are racing to online retailers to order face masks, hand sanitizer, hazmat suits and other items to protect against the coronavirus.\r\nThe surge in demand has created an opening for third-party sellers on various have all struggled to curb price gouging and products that make unverified claims about the coronavirus.',
+            newsViewModel.content,
             style: Theme.of(context).textTheme.bodyText2,
           ),
         ],
