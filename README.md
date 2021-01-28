@@ -1,16 +1,22 @@
-# mesa_news
+# MESA NEWS
 
-A new Flutter project.
+Aplicativo desenvolvido em Flutter para o Desafio Mobile do Mesa.
 
-## Getting Started
+## Download
 
-This project is a starting point for a Flutter application.
+[Download do apk](./dist/app-release.apk)
 
-A few resources to get you started if this is your first Flutter project:
+## Pacotes
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+- [GetX](https://pub.dev/packages/get)
+- [http](https://pub.dev/packages/http)
+- [Equatable](https://pub.dev/packages/equatable)
+- [Intl](https://pub.dev/packages/intl)
+- [Localstorage](https://pub.dev/packages/localstorage)
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Arquitetura e Alguns Padrões de Projetos utilizados
+
+- Clean Architecture
+- MVP
+- Adapter
+- Factory
